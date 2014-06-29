@@ -6,10 +6,6 @@ Element providing abstract query support for solr
 
 ##### Example
 
-
-<template id="mytemplate" is="auto-binding">
-
-    <p>query-base looks like this</p>
     <query-base outputQuery="{{outputQuery}}">
         <q-select>
             <q-field name="first_name"></q-field>
@@ -23,13 +19,6 @@ Element providing abstract query support for solr
             <q-filter field="last_name" op="equals" value="Bar"></q-filter>
         </q-where>
     </query-base>
-
-    <p>Output Query</p>
-    <pre>{{outputQuery.sql}}</pre>
-</template>
-
-##### Output
-select first_name, last_name from person where first_name = 'Foo' and last_name = 'Bar'
 
 @element solr-query
 @blurb Element providing abstract query support for solr
