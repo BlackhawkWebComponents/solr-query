@@ -1,0 +1,78 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../query-base/query-base.html">
+
+<!--
+Element providing abstract query support for solr
+
+##### Example
+
+
+<template id="mytemplate" is="auto-binding">
+
+    <p>query-base looks like this</p>
+    <query-base outputQuery="{{outputQuery}}">
+        <q-select>
+            <q-field name="first_name"></q-field>
+            <q-field name="last_name"></q-field>
+        </q-select>
+        <q-from>
+            <q-collection name="person"></q-collection>
+        </q-from>
+        <q-where>
+            <q-filter field="first_name" op="equals" value="Foo"></q-filter>
+            <q-filter field="last_name" op="equals" value="Bar"></q-filter>
+        </q-where>
+    </query-base>
+
+    <p>Output Query</p>
+    <pre>{{outputQuery.sql}}</pre>
+</template>
+
+##### Output
+select first_name, last_name from person where first_name = 'Foo' and last_name = 'Bar'
+
+@element solr-query
+@blurb Element providing abstract query support for solr
+@status alpha
+@url http://blackhawkwebcomponents.github.io/solr-query
+-->
+<polymer-element name="solr-query" extends="query-base" attributes="outputQuery baseUrl searchText">
+    <template>
+        <shadow></shadow>
+    </template>
+    <script>
+        Polymer('solr-query', {
+            /**
+             * Query search term string, used in q=
+             * @attribute searchText
+             * @type String
+             */
+            searchText: '*:*',
+            updateOutputQuery: function() {
+                var fl = 'fl=';
+                for (var i = 0; i < this.selectFields.length; ++i) {
+                    if (i > 0 && this.selectFields.length > 1)
+                        fl += ',';
+                    fl += this.selectFields[i].name;
+                }
+
+                var collection = this.fromCollections[0].name;
+
+                var facetQuery = '&facet=true';
+                for (var i = 0; i < this.whereFilters.length; ++i) {
+                    var filter  = this.whereFilters[i];
+                    if (filter.value && filter.value != null && filter.value.trim().length > 0) {
+                        if (i > 0 && this.whereFilters.length > 1)
+                            where += ' and ';
+                        //TODO: put in function with case statement
+                        var op = ':';
+                        facetQuery += "&facet.query="+filter.field + op + filter.value;
+                    }
+                }
+
+                this.outputQuery.url = this.baseUrl+collection+"/select/?q="+this.searchText+facetQuery;
+            }
+        });
+    </script>
+</polymer-element>
+

@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+    <title>solr-query Demo</title>
+
+    <script src="../platform/platform.js"></script>
+    <link rel="import" href="solr-query.html">
+
+</head>
+<body unresolved>
+
+<template id="mytemplate" is="auto-binding">
+
+    <p>query-base looks like this</p>
+    <solr-query outputQuery="{{outputQuery}}" baseUrl="http://localhost:8983/solr/">
+        <q-select>
+            <q-field name="name"></q-field>
+            <q-field name="id"></q-field>
+            <q-field name="score"></q-field>
+        </q-select>
+        <q-from>
+            <q-collection name="collection1"></q-collection>
+        </q-from>
+        <q-where>
+            <q-filter field="name" op="equals" value="Foo"></q-filter>
+        </q-where>
+    </solr-query>
+
+    <p>Solr Output Query</p>
+    <pre>{{outputQuery.url}}</pre>
+</template>
+
+
+</body>
+</html>
