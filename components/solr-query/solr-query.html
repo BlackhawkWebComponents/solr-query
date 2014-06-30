@@ -1,0 +1,68 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../query-base/query-base.html">
+
+<!--
+Element providing abstract query support for solr
+
+##### Example
+
+    <solr-query outputQuery="{{outputQuery}}" baseUrl="http://localhost:8983/solr/">
+        <q-select>
+            <q-field expr="name"></q-field>
+            <q-field expr="id"></q-field>
+            <q-field expr="score"></q-field>
+        </q-select>
+        <q-from>
+            <q-dataset name="collection1"></q-dataset>
+        </q-from>
+        <q-where>
+            <q-condition field="name" op="equals" value="Foo"></q-condition>
+        </q-where>
+    </solr-query>
+
+
+@element solr-query
+@blurb Element providing abstract query support for solr
+@status alpha
+@url http://blackhawkwebcomponents.github.io/solr-query
+-->
+<polymer-element name="solr-query" extends="query-base" attributes="outputQuery baseUrl searchText">
+    <template>
+        <shadow></shadow>
+    </template>
+    <script>
+        Polymer('solr-query', {
+            /**
+             * Query search term string, used in q=
+             * @attribute searchText
+             * @type String
+             */
+            searchText: '*:*',
+            updateOutputQuery: function() {
+                var fl = 'fl=';
+                for (var i = 0; i < this.selectFields.length; ++i) {
+                    if (i > 0 && this.selectFields.length > 1)
+                        fl += ',';
+                    fl += this.selectFields[i].expr;
+                }
+
+                var dataset = this.fromDatasets[0].name;
+
+                var facetQuery = '&facet=true';
+                for (var i = 0; i < this.whereConditions.length; ++i) {
+                    var condition  = this.whereConditions[i];
+                    if (condition.value && condition.value != null && condition.value.trim().length > 0) {
+                        if (i > 0 && this.whereConditions.length > 1)
+                            where += ' and ';
+                        //TODO: put in function with case statement
+                        var op = ':';
+                        facetQuery += "&facet.query="+condition.field + op + condition.value;
+                    }
+                }
+
+                this.outputQuery.url = this.baseUrl+dataset+"/select/?q="+this.searchText+facetQuery;
+            }
+        });
+    </script>
+</polymer-element>
+
