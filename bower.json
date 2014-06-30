@@ -22,7 +22,7 @@
         "polymer"
     ],
     "dependencies": {
-        "polymer": "Polymer/polymer#>=0.3.0 <1.0.0",
+        "polymer": "Polymer/polymer#master",
         "query-base": "BlackhawkWebComponents/query-base"
     }
 }
