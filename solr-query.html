@@ -6,19 +6,20 @@ Element providing abstract query support for solr
 
 ##### Example
 
-    <query-base outputQuery="{{outputQuery}}">
+    <solr-query outputQuery="{{outputQuery}}" baseUrl="http://localhost:8983/solr/">
         <q-select>
-            <q-field name="first_name"></q-field>
-            <q-field name="last_name"></q-field>
+            <q-field expr="name"></q-field>
+            <q-field expr="id"></q-field>
+            <q-field expr="score"></q-field>
         </q-select>
         <q-from>
-            <q-dataset name="person"></q-dataset>
+            <q-dataset name="collection1"></q-dataset>
         </q-from>
         <q-where>
-            <q-filter field="first_name" op="equals" value="Foo"></q-filter>
-            <q-filter field="last_name" op="equals" value="Bar"></q-filter>
+            <q-condition field="name" op="equals" value="Foo"></q-condition>
         </q-where>
-    </query-base>
+    </solr-query>
+
 
 @element solr-query
 @blurb Element providing abstract query support for solr
@@ -42,24 +43,24 @@ Element providing abstract query support for solr
                 for (var i = 0; i < this.selectFields.length; ++i) {
                     if (i > 0 && this.selectFields.length > 1)
                         fl += ',';
-                    fl += this.selectFields[i].name;
+                    fl += this.selectFields[i].expr;
                 }
 
-                var collection = this.fromCollections[0].name;
+                var dataset = this.fromDatasets[0].name;
 
                 var facetQuery = '&facet=true';
-                for (var i = 0; i < this.whereFilters.length; ++i) {
-                    var filter  = this.whereFilters[i];
-                    if (filter.value && filter.value != null && filter.value.trim().length > 0) {
-                        if (i > 0 && this.whereFilters.length > 1)
+                for (var i = 0; i < this.whereConditions.length; ++i) {
+                    var condition  = this.whereConditions[i];
+                    if (condition.value && condition.value != null && condition.value.trim().length > 0) {
+                        if (i > 0 && this.whereConditions.length > 1)
                             where += ' and ';
                         //TODO: put in function with case statement
                         var op = ':';
-                        facetQuery += "&facet.query="+filter.field + op + filter.value;
+                        facetQuery += "&facet.query="+condition.field + op + condition.value;
                     }
                 }
 
-                this.outputQuery.url = this.baseUrl+collection+"/select/?q="+this.searchText+facetQuery;
+                this.outputQuery.url = this.baseUrl+dataset+"/select/?q="+this.searchText+facetQuery;
             }
         });
     </script>

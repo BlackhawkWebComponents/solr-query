@@ -15,15 +15,15 @@
     <p>query-base looks like this</p>
     <solr-query outputQuery="{{outputQuery}}" baseUrl="http://localhost:8983/solr/">
         <q-select>
-            <q-field name="name"></q-field>
-            <q-field name="id"></q-field>
-            <q-field name="score"></q-field>
+            <q-field expr="name"></q-field>
+            <q-field expr="id"></q-field>
+            <q-field expr="score"></q-field>
         </q-select>
         <q-from>
             <q-dataset name="collection1"></q-dataset>
         </q-from>
         <q-where>
-            <q-filter field="name" op="equals" value="Foo"></q-filter>
+            <q-condition field="name" op="equals" value="Foo"></q-condition>
         </q-where>
     </solr-query>
 
