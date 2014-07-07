@@ -12,23 +12,24 @@
 
 <template id="mytemplate" is="auto-binding">
 
-    <p>query-base looks like this</p>
-    <solr-query outputQuery="{{outputQuery}}" baseUrl="http://localhost:8983/solr/">
+    <p>solr-query looks like this</p>
+    <solr-query
+            outputQuery="{{outputQuery}}"
+            baseUrl="http://localhost:8983/solr/"
+            debug="true">
         <q-select>
-            <q-field expr="name"></q-field>
-            <q-field expr="id"></q-field>
-            <q-field expr="score"></q-field>
+            <q-field expr="cat"></q-field>
         </q-select>
         <q-from>
             <q-dataset name="collection1"></q-dataset>
         </q-from>
         <q-where>
-            <q-condition field="name" op="equals" value="Foo"></q-condition>
+            <q-condition field="manu_id_s" op="equals" value="canon"></q-condition>
         </q-where>
     </solr-query>
 
     <p>Solr Output Query</p>
-    <pre>{{outputQuery.url}}</pre>
+    <a href="{{outputQuery.url}}" target="_blank">{{outputQuery.url}}</a>
 </template>
 
 
