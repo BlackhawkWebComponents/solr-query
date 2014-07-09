@@ -1,5 +1,5 @@
 <link rel="import" href="../polymer/polymer.html">
-<link rel="import" href="../query-base/query-base.html">
+<link rel="import" href="../structured-query/structured-query.html">
 
 <!--
 Element providing abstract query support for solr
@@ -26,7 +26,7 @@ Element providing abstract query support for solr
 @status alpha
 @url http://blackhawkwebcomponents.github.io/solr-query
 -->
-<polymer-element name="solr-query" extends="query-base" attributes="outputQuery baseUrl facet">
+<polymer-element name="solr-query" extends="structured-query" attributes="outputQuery baseUrl facet">
     <template>
         <shadow></shadow>
     </template>

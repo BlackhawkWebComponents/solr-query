@@ -23,6 +23,6 @@
     ],
     "dependencies": {
         "polymer": "Polymer/polymer#master",
-        "query-base": "BlackhawkWebComponents/query-base"
+        "structured-query": "BlackhawkWebComponents/structured-query"
     }
 }
