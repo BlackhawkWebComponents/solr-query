@@ -77,7 +77,7 @@ Element providing abstract query support for solr
                             var op = ':';
                             where += '&fq='+condition.field + op + '"'+condition.value+'"';
                         }
-                    } else if (condition.op == 'range') {
+                    } else if (condition.op == 'range' && condition.value != null && condition.value2 != null) {
                         var start_time = new Date(condition.value).toISOString();
                         var end_time = new Date(condition.value2).toISOString();
                         var fq = '&fq=' + condition.field + ':[' + start_time + '%20TO%20' + end_time + ']';
@@ -90,6 +90,7 @@ Element providing abstract query support for solr
                 if (this.debug)
                     debug = '&indent=on';
                 var url = this.baseUrl+dataset+"/select/?wt=json"+select+where+limit+debug;
+                //console.log('url: ' + url);
                 this.outputQuery.url = url;
             }
         });
