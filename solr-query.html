@@ -71,11 +71,19 @@ Element providing abstract query support for solr
                 var where = '';
                 for (var i = 0; i < this.whereConditions.length; ++i) {
                     var condition  = this.whereConditions[i];
-                    if (condition.value && condition.value != null && condition.value.trim().length > 0) {
-                        //TODO: put in function with case statement
-                        var op = ':';
-                        where += '&fq='+condition.field + op + '"'+condition.value+'"';
+                    if (condition.op == 'equals') {
+                        if (condition.value && condition.value != null && condition.value.trim().length > 0) {
+                            //TODO: put in function with case statement
+                            var op = ':';
+                            where += '&fq='+condition.field + op + '"'+condition.value+'"';
+                        }
+                    } else if (condition.op == 'range') {
+                        var start_time = new Date(condition.value).toISOString();
+                        var end_time = new Date(condition.value2).toISOString();
+                        var fq = '&fq=' + condition.field + ':[' + start_time + '%20TO%20' + end_time + ']';
+                        where += fq;
                     }
+
                 }
 
                 var debug = '';
